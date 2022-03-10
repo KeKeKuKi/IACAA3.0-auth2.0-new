@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>user</artifactId>
+        <groupId>com.gapache</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>user-server</artifactId>
+    <name>user-server</name>
+    <packaging>jar</packaging>
+    <description>
+        用户中心核心服务，可以提供restful服务/dubbo服务 + spring cloud sdk支持
+        1.登录和注册（手机号）
+        2.基本信息查询与修改
+        3.支持qq/微信三方登录
+        4.支持多系统和客户端
+        5.客户端和其他系统可以自定义信息
+        默认Account表以及每个产品的额外用户表 产品可以使用Account默认属性，也可以使用自己表里的属性
+    </description>
+
+    <dependencies>
+        <!-- nacos 注册中心 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+<!--        &lt;!&ndash; seata 分布式事务 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>io.seata</groupId>-->
+<!--                    <artifactId>seata-all</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>io.seata</groupId>-->
+<!--            <artifactId>seata-spring-boot-starter</artifactId>-->
+<!--            <version>1.4.0</version>-->
+<!--        </dependency>-->
+
+        <!-- Sentinel -->
+<!--        <dependency>-->
+<!--            <groupId>com.gapache</groupId>-->
+<!--            <artifactId>support-cloud-sentinel</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>com.gapache</groupId>
+            <artifactId>support-jpa</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gapache</groupId>
+            <artifactId>user-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gapache</groupId>
+            <artifactId>auth-center-resource-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gapache</groupId>
+            <artifactId>support-vertx-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-hazelcast</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.hazelcast</groupId>
+                    <artifactId>hazelcast</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>user-server</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

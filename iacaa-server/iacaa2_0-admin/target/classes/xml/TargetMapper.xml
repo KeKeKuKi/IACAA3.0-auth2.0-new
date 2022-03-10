@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pzhu.iacaa2_0.mapper.TargetMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.pzhu.iacaa2_0.entity.Target">
+        <result column="id" property="id"/>
+        <result column="discribe" property="discribe"/>
+        <result column="req_id" property="reqId"/>
+        <result column="year" property="year"/>
+        <result column="sys_grade" property="sysGrade"/>
+        <result column="stu_grade" property="stuGrade"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, discribe, req_id, year, sys_grade, stu_grade, created_date, update_date
+    </sql>
+
+    <select id="getByReqId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select *
+        from t_target
+        where req_id = #{id}
+    </select>
+
+    <select id="list" parameterType="com.pzhu.iacaa2_0.entityVo.TargetVo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_target
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="word != null and word !=''">
+                    AND discribe like CONCAT(CONCAT('%',#{word}),'%')
+                </if>
+                <if test="id != null and id !=''">
+                    AND id = #{id}
+                </if>
+                <if test="reqId != null and reqId !=''">
+                    AND req_id = #{reqId}
+                </if>
+                <if test="year != null">
+                    AND year = #{year}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <update id="summaryByTargetId" parameterType="java.lang.Long">
+        UPDATE t_target
+        set sys_grade = (
+            SELECT SUM(ctt.grade * ctt.tmix)
+            from (
+                     SELECT ct.course_id, ct.tmix, SUM(cmix * sys_grade) grade
+                     from (
+                              SELECT a.course_id, a.target_id, b.mix tmix, a.mix cmix, a.sys_grade
+                              FROM t_course_task a
+                                       LEFT JOIN t_course_target b
+                                                 ON (a.target_id = #{id} AND a.course_id = b.course_id and
+                                                     a.target_id = b.target_id)
+                          ) ct
+                     GROUP BY ct.course_id, ct.tmix
+                 ) ctt),
+            stu_grade = (
+                SELECT SUM(ctt1.grade * ctt1.tmix)
+                from (
+                         SELECT ct1.course_id, ct1.tmix, SUM(cmix * stu_grade) grade
+                         from (
+                                  SELECT a.course_id, a.target_id, b.mix tmix, a.mix cmix, a.stu_grade
+                                  FROM t_course_task a
+                                           LEFT JOIN t_course_target b
+                                                     ON (a.target_id = #{id} AND a.course_id = b.course_id and
+                                                         a.target_id = b.target_id)
+                              ) ct1
+                         GROUP BY ct1.course_id, ct1.tmix
+                     ) ctt1)
+        WHERE id in (select distinct(target_id) from t_course_task) and id = #{id}
+    </update>
+
+    <delete id="removeByReqId" parameterType="java.lang.Long">
+        delete from t_target where req_id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <modules>
+        <module>cloud-base</module>
+        <module>commons</module>
+        <module>rocketmq</module>
+        <module>support-dubbo</module>
+        <module>support-elastic-job</module>
+        <module>support-jpa</module>
+        <module>support-mybatis</module>
+        <module>support-nacos-config</module>
+        <module>support-nacos-registry</module>
+        <module>support-oss</module>
+        <module>support-protobuf</module>
+        <module>support-redis</module>
+        <module>support-web</module>
+        <module>uid-generator</module>
+        <module>support-alipay</module>
+        <module>support-openfeign</module>
+        <module>support-vertx-web</module>
+        <module>support-cloud-zeus-discovery</module>
+        <module>support-vertx-redis</module>
+        <module>support-vertx-core</module>
+        <module>support-cloud-sentinel</module>
+        <module>support-cloud-stream-binder-rocketmq</module>
+        <module>support-cloud-starter-stream-rocketmq</module>
+        <module>support-cloud-bus</module>
+    </modules>
+
+    <!-- 基于spring-boot 2.3.3.RELEASE -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.3.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.gapache</groupId>
+    <artifactId>base</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>base</name>
+    <packaging>pom</packaging>
+    <description>基础包</description>
+
+    <properties>
+        <!-- jdk 版本 -->
+        <java.version>1.8</java.version>
+        <!-- protobuf 版本 -->
+        <protobuf.version>3.11.1</protobuf.version>
+        <!-- grpc 版本 -->
+        <grpc.version>1.26.0</grpc.version>
+        <!-- spring-cloud 版本使用2020.0.1 -->
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
+        <!--spring-cloud-alibaba 版本-->
+        <spring-cloud-alibaba.version>2.2.5.RELEASE</spring-cloud-alibaba.version>
+        <!-- guava 版本 -->
+        <guava.version>28.1-jre</guava.version>
+        <!-- lang3 版本 -->
+        <lang3.version>3.9</lang3.version>
+        <!-- collections4 版本 -->
+        <collections4.version>4.4</collections4.version>
+        <!-- fastjson 版本 -->
+        <fastjson.version>1.2.62</fastjson.version>
+        <!-- com.dyuproject.protostuff 版本 -->
+        <com.dyuproject.protostuff.version>1.1.5</com.dyuproject.protostuff.version>
+        <!-- protobuf-java-format 版本 -->
+        <protobuf-java-format.version>1.4</protobuf-java-format.version>
+        <!-- okHttp3 版本 -->
+        <okHttp3.version>4.3.0</okHttp3.version>
+        <!-- protobuf-maven-plugin 版本 -->
+        <protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>
+        <!-- nacos 版本 -->
+        <nacos.version>0.2.4</nacos.version>
+        <!-- elasticsearch 版本 -->
+        <elasticsearch.version>7.6.2</elasticsearch.version>
+        <!-- jwt版本 -->
+        <jwt.version>0.9.1</jwt.version>
+        <!-- netty 版本 -->
+        <netty.version>4.1.48.Final</netty.version>
+        <!-- dubbo spring boot 版本 -->
+        <dubbo.spring.boot.version>0.2.0</dubbo.spring.boot.version>
+        <!-- dubbo nacos版本 -->
+        <dubbo.nacos.version>2.6.7</dubbo.nacos.version>
+        <!-- spring boot mybatis starter版本 -->
+        <boot.mybatis.version>3.3.1.tmp</boot.mybatis.version>
+        <!-- elastic-job 版本 -->
+        <elastic.job.version>2.1.5</elastic.job.version>
+        <!-- vertx 版本 -->
+        <vertx.version>4.0.2</vertx.version>
+        <!-- stream binder rocketmq 版本 -->
+        <stream.binder.rocketmq>2.2.0.RELEASE</stream.binder.rocketmq>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- 指定spring-cloud使用的版本 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- 指定spring-cloud-alibaba使用的版本 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- 指定guava使用的依赖包 -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <!-- 指定lang3使用的依赖包 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${lang3.version}</version>
+            </dependency>
+            <!-- 指定collections4使用的依赖包 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${collections4.version}</version>
+            </dependency>
+            <!-- 指定fastjson使用的依赖包 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <!-- 指定com.dyuproject.protostuff依赖包 -->
+            <dependency>
+                <groupId>com.dyuproject.protostuff</groupId>
+                <artifactId>protostuff-core</artifactId>
+                <version>${com.dyuproject.protostuff.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dyuproject.protostuff</groupId>
+                <artifactId>protostuff-runtime</artifactId>
+                <version>${com.dyuproject.protostuff.version}</version>
+            </dependency>
+            <!-- 指定okhttp3的依赖包 -->
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okHttp3.version}</version>
+            </dependency>
+            <!-- 指定 nacos config -->
+            <dependency>
+                <groupId>com.alibaba.boot</groupId>
+                <artifactId>nacos-config-spring-boot-starter</artifactId>
+                <version>${nacos.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.boot</groupId>
+                <artifactId>nacos-config-spring-boot-actuator</artifactId>
+                <version>${nacos.version}</version>
+            </dependency>
+            <!-- 指定es版本 -->
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <!-- 指定jwt -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+            <!-- 指定netty -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <!-- 指定Dubbo -->
+            <dependency>
+                <groupId>com.alibaba.boot</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${dubbo.spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>dubbo-registry-nacos</artifactId>
+                <version>${dubbo.nacos.version}</version>
+            </dependency>
+            <!-- 指定 boot mybatis -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${boot.mybatis.version}</version>
+            </dependency>
+            <!-- 指定vert.x版本 -->
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-core</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-web</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-hazelcast</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-redis-client</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-stream-binder-rocketmq</artifactId>
+                <version>${stream.binder.rocketmq}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <finalName>base</finalName>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.6.1</version>
+            </extension>
+        </extensions>
+        <pluginManagement>
+            <plugins>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Releases</name>
+            <url>http://118.24.38.46:18081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Snapshot</name>
+            <url>http://118.24.38.46:18081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>

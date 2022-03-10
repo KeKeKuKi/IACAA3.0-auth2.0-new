@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pzhu.iacaa2_0.mapper.GradRequirementMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.pzhu.iacaa2_0.entity.GradRequirement">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="discrible" property="discrible" />
+        <result column="year" property="year" />
+        <result column="sys_grade" property="sysGrade" />
+        <result column="stu_grade" property="stuGrade" />
+        <result column="created_date" property="createdDate" />
+        <result column="update_date" property="updateDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, discrible, year, sys_grade, stu_grade, created_date, update_date
+    </sql>
+
+
+    <select id="listByVo" parameterType="com.pzhu.iacaa2_0.entityVo.GradRequirementVo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_grad_requirement
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="word != null and word !=''">
+                    AND name like CONCAT(CONCAT('%',#{word}),'%')
+                </if>
+                <if test="name != null and name !=''">
+                    AND name = #{name}
+                </if>
+                <if test="discrible != null and discrible !=''">
+                    AND discrible = #{discrible}
+                </if>
+                <if test="year != null">
+                    AND year = #{year}
+                </if>
+                <if test="discrible != null and discrible !=''">
+                    AND discrible = #{discrible}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <resultMap type="com.pzhu.iacaa2_0.entityVo.GradRequirementVo" id="voMap">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="discrible" property="discrible" />
+        <result column="year" property="year" />
+        <result column="sys_grade" property="sysGrade" />
+        <result column="stu_grade" property="stuGrade" />
+        <result column="created_date" property="createdDate" />
+        <result column="update_date" property="updateDate" />
+        <association property="targets" column="id" select="com.pzhu.iacaa2_0.mapper.TargetMapper.getByReqId"></association>
+    </resultMap>
+
+    <select id="voList" parameterType="com.pzhu.iacaa2_0.entityVo.GradRequirementVo" resultMap="voMap">
+        select <include refid="Base_Column_List"></include>
+        from t_grad_requirement
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="word != null and word !=''">
+                    AND (name like CONCAT(CONCAT('%',#{word}),'%') or discrible like CONCAT(CONCAT('%',#{word}),'%'))
+                </if>
+                <if test="id != null and id !=''">
+                    AND id = #{id}
+                </if>
+                <if test="name != null and name !=''">
+                    AND name = #{name}
+                </if>
+                <if test="discrible != null and discrible !=''">
+                    AND discrible = #{discrible}
+                </if>
+                <if test="year != null">
+                    AND year = #{year}
+                </if>
+            </trim>
+        </where>
+        order By update_date DESC
+    </select>
+
+    <update id="summaryByReqId" parameterType="java.lang.Long">
+        UPDATE t_grad_requirement
+        set sys_grade =  (
+                SELECT AVG(sys_grade)
+                from t_target
+                WHERE req_id = #{id}),
+            stu_grade =  (
+                SELECT AVG(stu_grade)
+                from t_target
+                WHERE req_id = #{id})
+        WHERE id in (select distinct(req_id) from t_target) and id = #{id}
+    </update>
+
+</mapper>

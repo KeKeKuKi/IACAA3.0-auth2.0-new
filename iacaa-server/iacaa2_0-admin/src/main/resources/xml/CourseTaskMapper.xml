@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pzhu.iacaa2_0.mapper.CourseTaskMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.pzhu.iacaa2_0.entity.CourseTask">
+        <result column="id" property="id"/>
+        <result column="describes" property="describes"/>
+        <result column="course_id" property="courseId"/>
+        <result column="target_id" property="targetId"/>
+        <result column="mix" property="mix"/>
+        <result column="year" property="year"/>
+        <result column="sys_grade" property="sysGrade"/>
+        <result column="stu_grade" property="stuGrade"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <resultMap id="voMap" type="com.pzhu.iacaa2_0.entityVo.CourseTaskVo">
+        <result column="id" property="id"/>
+        <result column="describes" property="describes"/>
+        <result column="course_id" property="courseId"/>
+        <result column="target_id" property="targetId"/>
+        <result column="mix" property="mix"/>
+        <result column="year" property="year"/>
+        <result column="sys_grade" property="sysGrade"/>
+        <result column="stu_grade" property="stuGrade"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="update_date" property="updateDate"/>
+        <association property="target" column="target_id" select="com.pzhu.iacaa2_0.mapper.TargetMapper.selectById"/>
+        <association property="course" column="course_id" select="com.pzhu.iacaa2_0.mapper.CourseMapper.selectById"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, describes, course_id, target_id, mix, year, sys_grade, stu_grade, created_date, update_date
+    </sql>
+
+
+    <update id="summaryStuScore" parameterType="java.lang.Long">
+        UPDATE t_course_task
+        set stu_grade = (
+            SELECT AVG(score)/5
+            FROM `t_stu_evaluation`
+            WHERE course_task = #{courseTaskId})
+        WHERE id = #{courseTaskId} and id in (select distinct(course_task) from t_stu_evaluation)
+    </update>
+
+    <update id="coverNullToZero">
+        UPDATE t_course_task set sys_grade = 0 WHERE isNULL(sys_grade)
+    </update>
+
+    <select id="randomlist" resultMap="voMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_course_task
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="courseTask.courseId != null and courseTask.courseId !=''">
+                    AND course_id = #{courseTask.courseId}
+                </if>
+                <if test="courseTask.targetId != null and courseTask.targetId !=''">
+                    AND target_id = #{courseTask.targetId}
+                </if>
+                <if test="courseTask.year != null and courseTask.year !=''">
+                    AND year = #{courseTask.year}
+                </if>
+                <if test="courseTask.stuGrade != null">
+                    AND stu_grade = #{courseTask.stuGrade}
+                </if>
+            </trim>
+        </where>
+        order by rand() limit #{randomSize}
+    </select>
+
+    <select id="getByCourseId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_course_task where course_id = #{id} order by year desc, course_id asc
+    </select>
+
+
+
+    <select id="voList" parameterType="com.pzhu.iacaa2_0.entityVo.CourseTaskVo" resultMap="voMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_course_task
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="id != null and id !=''">
+                    AND id = #{id}
+                </if>
+                <if test="word != null and word !=''">
+                    AND describes like CONCAT(CONCAT('%',#{word}),'%')
+                </if>
+                <if test="courseId != null and courseId !=''">
+                    AND course_id = #{courseId}
+                </if>
+                <if test="year != null and year !=''">
+                    AND year = #{year}
+                </if>
+                <if test="targetId != null and targetId !=''">
+                    AND target_id = #{targetId}
+                </if>
+            </trim>
+        </where>
+        order by year desc,course_id asc
+    </select>
+
+    <select id="list" parameterType="com.pzhu.iacaa2_0.entity.CourseTask" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_course_task
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="id != null and id !=''">
+                    AND id = #{id}
+                </if>
+                <if test="courseId != null and courseId !=''">
+                    AND course_id = #{courseId}
+                </if>
+                <if test="targetId != null and targetId !=''">
+                    AND target_id = #{targetId}
+                </if>
+                <if test="year != null and year !=''">
+                    AND year = #{year}
+                </if>
+                <if test="sysGrade != null and sysGrade !=''">
+                    AND sys_grade = #{sysGrade}
+                </if>
+                <if test="stuGrade != null and stuGrade !=''">
+                    AND stu_grade = #{stuGrade}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+
+</mapper>

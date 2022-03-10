@@ -1,0 +1,74 @@
+server:
+  port: 8889
+spring:
+  application:
+    name: user-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        group: DEFAULT_GROUP
+#    sentinel:
+#      transport:
+#        dashboard: localhost:8080
+#        port: 8719
+#        # 持久化到Nacos
+#      datasource:
+#        ds1:
+#          nacos:
+#            server-addr: ${spring.cloud.nacos.discovery.server-addr}
+#            dataId: ${spring.application.name}-sentinel-service.json
+#            groupId: DEFAULT_GROUP
+#            data-type: json
+#            rule-type: flow
+#        degrade:
+#          nacos:
+#            server-addr: ${spring.cloud.nacos.discovery.server-addr}
+#            dataId: ${spring.application.name}-degrade-config.json
+#            groupId: DEFAULT_GROUP
+#            data-type: json
+#            rule-type: degrade
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/iacaa30?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 166056
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+com:
+  gapache:
+    security:
+      client-id: user123456user
+      register-remote: true
+      update-resources: true
+
+#seata:
+#  config:
+#    type: nacos
+#    nacos:
+#      server-addr: :8848
+#      group: "SEATA_GROUP"
+#      namespace: ""
+#      username: "nacos"
+#      password: "nacos"
+#  application-id: ${spring.application.name}
+#  registry:
+#    type: nacos
+#    nacos:
+#      application: seata-server
+#      server-addr: ${seata.config.nacos.server-addr}
+#      group: "SEATA_GROUP"
+#      namespace: ""
+#      username: "nacos"
+#      password: "nacos"
+#  tx-service-group: my_test_tx_group
+#  service:
+#    vgroup-mapping:
+#      my_test_tx_group: default
+

@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "localStorage": "^1.0.4"
+  }
+}

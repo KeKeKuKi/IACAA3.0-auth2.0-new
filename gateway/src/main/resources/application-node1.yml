@@ -1,0 +1,24 @@
+server:
+  port: 10000
+spring:
+  application:
+    name: gateway
+  redis:
+    host: 159.75.109.113
+    port: 6379
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 159.75.109.113:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+
+com:
+  gapache:
+    security:
+      public-key: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8T6qpCh+Jlm5E9qkO2IEOO/nBQP87a2rzVuIuZxt8QjpkdwXznQNWR/AJ4A31bvJ3sIkIR/xYEKfLmapmSCvGsLFyrbWmyhkzFADW5zuyxvnY0eGBLSEutKnW/7l4EAYGNHc/ClT9cvEBgKoE68mM+RMZ6Uuj4x8eh6jsLV1v2QIDAQAB"

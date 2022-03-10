@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pzhu.iacaa2_0.mapper.CheckLinkMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.pzhu.iacaa2_0.entity.CheckLink">
+        <result column="id" property="id"/>
+        <result column="course_id" property="courseId"/>
+        <result column="name" property="name"/>
+        <result column="year" property="year"/>
+        <result column="target_score" property="targetScore"/>
+        <result column="average_score" property="averageScore"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, course_id, name, year, target_score, average_score, created_date, update_date
+    </sql>
+
+    <select id="list" parameterType="com.pzhu.iacaa2_0.entityVo.CheckLinkVo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_check_link a
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="id != null and id !=''">
+                    AND a.id = #{id}
+                </if>
+                <if test="courseId != null and courseId !=''">
+                    AND a.course_id = #{courseId}
+                </if>
+                <if test="word != null and word !=''">
+                    AND (a.name like CONCAT(CONCAT('%',#{word}),'%'))
+                </if>
+                <if test="year != null and year !=''">
+                    AND a.year = #{year}
+                </if>
+            </trim>
+        </where>
+        ORDER BY a.name
+    </select>
+
+    <update id="summaryByCourseTaskId"  parameterType="java.lang.Long">
+        update t_course_task SET sys_grade = (
+            SELECT SUM((a.average_score/a.target_score)*b.mix)
+            FROM t_check_link a LEFT JOIN t_course_task_check_link b
+                                          on a.id = b.check_link_id and b.course_task_id = #{id}
+        ) WHERE id=#{id}
+    </update>
+
+    <select id="listByCourseTaskId" resultType="com.pzhu.iacaa2_0.entity.CheckLink" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_check_link a where task_id = #{id}
+    </select>
+
+    <select id="listBySourseTask" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_check_link a
+        where a.id in(
+            select check_link_id
+            from t_course_task_check_link
+            where course_task_id = #{id}
+            )
+    </select>
+
+    <select id="getByCourseId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include> from t_check_link a where a.course_id = #{id}
+    </select>
+
+    <update id="coverNullToZero">
+        UPDATE t_check_link set average_score = 0 WHERE isNULL(average_score)
+    </update>
+
+</mapper>

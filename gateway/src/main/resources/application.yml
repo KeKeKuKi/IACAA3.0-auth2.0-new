@@ -1,0 +1,26 @@
+server:
+  port: 19999
+spring:
+  application:
+    name: gateway
+  redis:
+    host: 127.0.0.1
+    port: 6377
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        watch-delay: 5000
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+
+com:
+  gapache:
+    security:
+      public-key: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8T6qpCh+Jlm5E9qkO2IEOO/nBQP87a2rzVuIuZxt8QjpkdwXznQNWR/AJ4A31bvJ3sIkIR/xYEKfLmapmSCvGsLFyrbWmyhkzFADW5zuyxvnY0eGBLSEutKnW/7l4EAYGNHc/ClT9cvEBgKoE68mM+RMZ6Uuj4x8eh6jsLV1v2QIDAQAB"
+    vertx:
+      settings:
+        cluster: false

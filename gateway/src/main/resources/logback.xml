@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <!-- 引入SpringBoot日志样式 -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <property name="APP_NAME" value="gateway"/>
+    <property name="LOG_HOME" value="~/export/logs"/>
+
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+
+    <property name="CONSOLE_LOG_PATTERN" value="
+    ${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS})
+    {faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- })
+    {magenta} %clr(------){faint} %clr([%15.15t]){faint}
+    %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}} "/>
+
+    <!-- 输出到控制台 -->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                <!--%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level -&#45;&#45; [%thread] [%class{0}]:%line %logger{50} >>> %msg%n-->
+                ${CONSOLE_LOG_PATTERN}
+            </pattern>
+        </layout>
+    </appender>
+
+    <!-- =========== info输出到文件 ===========  -->
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤掉Error日志 -->
+            <level>ERROR</level>
+            <!-- 匹配就禁止掉 -->
+            <onMatch>DENY</onMatch>
+            <!-- 反之，接收 -->
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                %d{MM-dd HH:mm:ss.SSS} %-5level --- [%thread] [%class{0}]:%line %logger{50} >>> %msg%n
+            </pattern>
+            <!-- 记录日志的编码 -->
+            <charset>UTF-8</charset>
+        </encoder>
+
+        <!-- 滚动策略  -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/${APP_NAME}.info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+            <!-- 按时间回滚的同时，按文件大小来回滚 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>300MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!-- 从多个JVM安全地登录到同一个文件。 降低性能！ -->
+        <prudent>true</prudent>
+    </appender>
+
+    <!-- =========== 错误日志输出到文件 ===========  -->
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>
+                %d{MM-dd HH:mm:ss.SSS} %-5level --- [%thread] [%class{0}]:%line %logger{50} >>> %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <!--<fileNamePattern>${LOG_HOME}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/${APP_NAME}.error.%d.%i.log</fileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+            <!-- 按时间回滚的同时，按文件大小来回滚 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!-- 从多个JVM安全地登录到同一个文件。 降低性能！ -->
+        <prudent>true</prudent>
+    </appender>
+
+    <!-- =========== 错误日志输出到文件 ===========  -->
+    <appender name="exceptionHandlerErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>
+                %d{MM-dd HH:mm:ss.SSS} %-5level --- [%thread] [%class{0}]:%line %logger{50} >>> %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <!--<fileNamePattern>${LOG_HOME}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/${APP_NAME}.eh.%d.%i.log</fileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+            <!-- 按时间回滚的同时，按文件大小来回滚 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!-- 从多个JVM安全地登录到同一个文件。 降低性能！ -->
+        <prudent>true</prudent>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="fileInfoLog"/>
+        <appender-ref ref="fileErrorLog"/>
+    </root>
+</configuration>

@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "ribbon.ReadTimeout",
+      "type": "java.lang.String",
+      "description": "请求超时时间."
+    },
+    {
+      "name": "ribbon.ConnectTimeout",
+      "type": "java.lang.String",
+      "description": "连接超时时间."
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pzhu.iacaa2_0.mapper.StuScoreMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.pzhu.iacaa2_0.entity.StuScore">
+        <result column="id" property="id" />
+        <result column="check_link_id" property="checkLinkId" />
+        <result column="stuno" property="stuno" />
+        <result column="score" property="score" />
+        <result column="created_date" property="createdDate" />
+        <result column="update_date" property="updateDate" />
+        <result column="mix_score" property="mixScore" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, check_link_id, stuno, score, created_date, update_date, mix_score
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap" parameterType="com.pzhu.iacaa2_0.entity.StuScore">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_stu_score
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="checkLinkId != null and checkLinkId !=''">
+                    AND check_link_id = #{checkLinkId}
+                </if>
+                <if test="stuno != null and stuno !=''">
+                    AND stuno = #{stuno}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <update id="summaryByCheckLinkId"  parameterType="java.lang.Long">
+        UPDATE t_check_link a
+        set a.average_score = (
+            SELECT AVG(score)
+            from t_stu_score
+            WHERE check_link_id = #{id}
+            GROUP BY check_link_id)
+        WHERE id = #{id}
+    </update>
+
+    <update id="summaryCheckLinkScoreById" parameterType="java.lang.Long">
+        UPDATE t_check_link a
+        set a.average_score = (
+            SELECT AVG(score)
+            from t_stu_score
+            WHERE check_link_id = #{id}
+            GROUP BY check_link_id)
+        WHERE id = #{id}
+    </update>
+
+</mapper>

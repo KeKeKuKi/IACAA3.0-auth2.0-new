@@ -1,0 +1,69 @@
+server:
+  port: 10000
+spring:
+  application:
+    name: auth-center-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 118.24.38.46:8848
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://db:3306/iacaa20?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+    username: root
+    password: 521428Slyt!
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+  redis:
+    host: redis
+    port: 6379
+    password: 521428Slyt
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false
+    check-template: false
+com:
+  gapache:
+    security:
+      timeout: 1800000
+      private-key: "MIICeQIBADANBgkqhkiG9w0BAQEFAASCAmMwggJfAgEAAoGBALxPqqkKH4mWbkT2qQ7YgQ47+cFA/ztravNW4i5nG3xCOmR3BfOdA1ZH8AngDfVu8newiQhH/FgQp8uZqmZIK8awsXKttabKGTMUANbn
+        O7LG+djR4YEtIS60qdb/uXgQBgY0dz8KVP1y8QGAqgTryYz5ExnpS6PjHx6HqOwtXW/ZAgMBAAEC
+        gYEAqMZ2XL73+Sbcee7hIq8lLA7REEYi+6yQ1LxAR/qdhccN8tFCgk9tmD0thIxNtnXT1zZf+w4Z
+        uwxid3aoZLe2kvnIfeYTUhLjqphz9VU3ebNmIl0V3nTFeiX8GaQra6VGU7jKvyZ4DadmYLIaxYk9
+        0ohvWC6qYkY1SxaSjOP0FQkCQQDoE1Os/gK9lxaIA4MLFWXdH2zkkJSlMGA5XYG3sYorhFsRx8b7
+        TDKXXPYsO8ZnKIeiXZUpqUKEXc+LPvnuUc07AkEAz7lcsms61DeT1YDqWSSoX61dux/eVmU2t8yt
+        13NUBdkQ9XPbHBYwfOFVp5/5cnUf6itorBAaDDgD6OzJMEQ1+wJBAL4MnbiMJ2hlI2FtJtJbyphj
+        lMQ0llYUoKg5p/HrZVAvynhsFspSYxfLXBlrNhXiffh8FJwSbVOCk2TfxMLioGMCQQCPA57HlD4X
+        mAAnUa+HGk72OIU87S8Fqn+mwbu6h0OFFzKu20oypzBQ+k8frmtumycS8ToKpLdaTEKc3lGR8pR7
+        AkEAuLWEgIMwPf9cr2wyrxLAFSXX7bP8LAQ51a7LUSBQ3Tg0pUA0mYyxfB7Z74pAhtdstqm9pml7
+        WspbwcDf2RLSLw=="
+      public-key: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8T6qpCh+Jlm5E9qkO2IEOO/nBQP87a2rzVuIu
+        Zxt8QjpkdwXznQNWR/AJ4A31bvJ3sIkIR/xYEKfLmapmSCvGsLFyrbWmyhkzFADW5zuyxvnY0eGB
+        LSEutKnW/7l4EAYGNHc/ClT9cvEBgKoE68mM+RMZ6Uuj4x8eh6jsLV1v2QIDAQAB"
+      register-remote: false
+      update-resources: true
+
+#  设置ribbon客户端超时时间（OpenFeign默认支持ribbon）
+ribbon:
+#  指的是建立连接后从服务器读取到可用资源所用的时间 默认1秒
+  ReadTimeout: 10000
+#  指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间
+  ConnectTimeout: 5000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+logging:
+  config: classpath:logback-prod.xml

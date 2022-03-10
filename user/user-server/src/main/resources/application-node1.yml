@@ -1,0 +1,49 @@
+server:
+  port: 10006
+spring:
+  application:
+    name: user-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 159.75.109.113:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8720
+        # 持久化到Nacos
+      datasource:
+        ds1:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr}
+            dataId: ${spring.application.name}-sentinel-service.json
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
+        degrade:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr}
+            dataId: ${spring.application.name}-degrade-config.json
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: degrade
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://159.75.109.113:3306/iacaa20?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+    username: root
+    password: 521428Slyt!
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+com:
+  gapache:
+    security:
+      client-id: user123456user
+      register-remote: true
+      update-resources: false
+

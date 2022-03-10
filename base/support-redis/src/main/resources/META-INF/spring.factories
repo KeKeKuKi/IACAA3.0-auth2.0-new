@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.gapache.redis.RedisAutoConfiguration,\
+  com.gapache.redis.RedisLuaAutoConfiguration,\
+  com.gapache.redis.RedissonAutoConfiguration

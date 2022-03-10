@@ -1,0 +1,23 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: gateway
+  redis:
+    host: redis
+    port: 6379
+    password: 521428Slyt
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 118.24.38.46:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+logging:
+  config: classpath:logback-prod.xml
+com:
+  gapache:
+    security:
+      public-key: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8T6qpCh+Jlm5E9qkO2IEOO/nBQP87a2rzVuIuZxt8QjpkdwXznQNWR/AJ4A31bvJ3sIkIR/xYEKfLmapmSCvGsLFyrbWmyhkzFADW5zuyxvnY0eGBLSEutKnW/7l4EAYGNHc/ClT9cvEBgKoE68mM+RMZ6Uuj4x8eh6jsLV1v2QIDAQAB"

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pzhu.iacaa2_0.mapper.CourseTargetMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.pzhu.iacaa2_0.entity.CourseTarget">
+        <result column="id" property="id" />
+        <result column="course_id" property="courseId" />
+        <result column="target_id" property="targetId" />
+        <result column="mix" property="mix" />
+        <result column="created_date" property="createdDate" />
+        <result column="update_date" property="updateDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, course_id, target_id, mix
+    </sql>
+
+    <resultMap type="com.pzhu.iacaa2_0.entityVo.CourseTargetVo" id="voMap">
+        <association property="target" column="target_id" select="com.pzhu.iacaa2_0.mapper.TargetMapper.selectById"></association>
+        <association property="course" column="course_id" select="com.pzhu.iacaa2_0.mapper.CourseMapper.selectById"></association>
+    </resultMap>
+
+
+    <select id="volist" resultMap="voMap" parameterType="com.pzhu.iacaa2_0.entity.CourseTarget">
+        select <include refid="Base_Column_List"></include> from t_course_target
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="id != null and id !=''">
+                    AND id = #{id}
+                </if>
+                <if test="courseId != null and courseId !=''">
+                    AND course_id = #{courseId}
+                </if>
+                <if test="targetId != null and targetId !=''">
+                    AND target_id = #{targetId}
+                </if>
+            </trim>
+        </where>
+        order by course_id asc
+    </select>
+
+    <delete id="removeByTargetId" parameterType="java.lang.Long">
+        delete from t_course_target where target_id = #{id}
+    </delete>
+
+</mapper>

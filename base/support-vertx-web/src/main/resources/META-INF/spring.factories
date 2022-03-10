@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.gapache.vertx.web.config.HttpServerAutoConfiguration,\
+  com.gapache.vertx.web.config.HttpClientAutoConfiguration

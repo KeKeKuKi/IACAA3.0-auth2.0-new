@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pzhu.iacaa2_0.mapper.CourseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.pzhu.iacaa2_0.entity.Course">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="image" property="image" />
+        <result column="edit_user_id" property="editUserId" />
+        <result column="edit_status" property="editStatus" />
+        <result column="created_date" property="createdDate" />
+        <result column="update_date" property="updateDate" />
+    </resultMap>
+
+    <resultMap id="voMap" type="com.pzhu.iacaa2_0.entityVo.CourseVo">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="image" property="image" />
+        <result column="edit_user_id" property="editUserId" />
+        <result column="edit_status" property="editStatus" />
+        <result column="created_date" property="createdDate" />
+        <result column="update_date" property="updateDate" />
+        <association property="courseTasks" column="id"
+                     select="com.pzhu.iacaa2_0.mapper.CourseTaskMapper.getByCourseId"/>
+        <association property="checkLinks" column="id"
+                     select="com.pzhu.iacaa2_0.mapper.CheckLinkMapper.getByCourseId"/>
+    </resultMap>
+
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, image, edit_user_id, edit_status, created_date, update_date
+    </sql>
+
+    <select id="voList" resultMap="voMap" parameterType="com.pzhu.iacaa2_0.entityVo.CourseVo">
+        select <include refid="Base_Column_List"></include>
+        from t_course a
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="word != null and word !=''">
+                    AND (a.name like CONCAT(CONCAT('%',#{word}),'%'))
+                </if>
+                <if test="editUserId != null and editUserId !=''">
+                    AND edit_user_id = #{editUserId}
+                </if>
+            </trim>
+        </where>
+        ORDER by id
+    </select>
+
+    <select id="list" resultMap="BaseResultMap" parameterType="com.pzhu.iacaa2_0.entityVo.CourseVo">
+        select <include refid="Base_Column_List"></include>
+        from t_course a
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="word != null and word !=''">
+                    AND (a.name like CONCAT(CONCAT('%',#{word}),'%'))
+                </if>
+                <if test="editUserId != null and editUserId !=''">
+                    AND edit_user_id = #{editUserId}
+                </if>
+            </trim>
+        </where>
+        ORDER by id
+    </select>
+
+    <select id="fuzzyQuery" parameterType="com.pzhu.iacaa2_0.entity.Course" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_course a
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="word != null and word !=''">
+                    AND a.name like CONCAT(CONCAT('%',#{word}),'%')
+                </if>
+            </trim>
+        </where>
+        ORDER BY a.name
+    </select>
+
+</mapper>

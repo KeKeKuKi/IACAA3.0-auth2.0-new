@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pzhu.iacaa2_0.mapper.CourseTaskCheckLinkMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.pzhu.iacaa2_0.entity.CourseTaskCheckLink">
+        <result column="id" property="id" />
+        <result column="course_task_id" property="courseTaskId" />
+        <result column="check_link_id" property="checkLinkId" />
+        <result column="mix" property="mix" />
+        <result column="created_date" property="createdDate" />
+        <result column="update_date" property="updateDate" />
+    </resultMap>
+
+    <resultMap id="voMap" type="com.pzhu.iacaa2_0.entityVo.CourseTaskCheckLinkVo">
+        <result column="id" property="id" />
+        <result column="mix" property="mix" />
+        <result column="course_task_id" property="courseTaskId" />
+        <result column="check_link_id" property="checkLinkId" />
+        <result column="created_date" property="createdDate" />
+        <result column="update_date" property="updateDate" />
+        <association property="courseTask" column="course_task_id" select="com.pzhu.iacaa2_0.mapper.CourseTaskMapper.selectById"></association>
+        <association property="checkLink" column="check_link_id" select="com.pzhu.iacaa2_0.mapper.CheckLinkMapper.selectById"></association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, course_task_id, check_link_id, mix, created_date, update_date
+    </sql>
+
+    <select id="voList" resultMap="voMap" parameterType="com.pzhu.iacaa2_0.entityVo.CourseTaskCheckLinkVo">
+        select <include refid="Base_Column_List"></include> from t_course_task_check_link
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="id != null and id !=''">
+                    AND id = #{id}
+                </if>
+                <if test="courseTaskId != null and courseTaskId !=''">
+                    AND course_task_id = #{courseTaskId}
+                </if>
+                <if test="checkLinkId != null and checkLinkId !=''">
+                    AND check_link_id = #{checkLinkId}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+</mapper>

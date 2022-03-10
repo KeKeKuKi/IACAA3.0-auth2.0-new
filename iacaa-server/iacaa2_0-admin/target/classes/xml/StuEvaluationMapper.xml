@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pzhu.iacaa2_0.mapper.StuEvaluationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.pzhu.iacaa2_0.entity.StuEvaluation">
+        <result column="id" property="id" />
+        <result column="course_task" property="courseTask" />
+        <result column="ip" property="ip" />
+        <result column="stu_no" property="stuNo" />
+        <result column="score" property="score" />
+        <result column="created_date" property="createdDate" />
+        <result column="update_date" property="updateDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        course_task, ip, stu_no, score, created_date, update_date
+    </sql>
+
+    <select id="statisticsByCourseTaskId" parameterType="java.lang.Long" resultType="com.pzhu.iacaa2_0.entityVo.StuEvaluationStatisticsVo">
+        SELECT score,count(id) count FROM `t_stu_evaluation` WHERE course_task = #{id} GROUP BY score
+    </select>
+
+</mapper>
