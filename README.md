@@ -4,12 +4,13 @@
 ### 最近很多小伙伴再咨询项目相关的问题，大多集中在部署问题，这个版本简化了部署难度，上传了数据库sql脚本，路径为iacaa-server/iacaa2_0-admin/src/main/resources/iacaa-20210407.sql
 
 ## 部署基本步骤如下：
-## 1.使用脚本创建数据库
-## 2.安装Srping-Alibaba Nacos 安装方法参照Nacos官方网站
-## 3.将auth,user,iacaa,gateway四个服务的Nacos配置为安装机器IP:端口
+## 1.使用以上SQL脚本创建数据库
+## 2.安装Srping-Alibaba Nacos 安装方法参照Nacos官方网站 https://nacos.io/zh-cn/docs/what-is-nacos.html
+## 3.将auth,user,iacaa,gateway四个服务的Nacos配置为你的安装机器IP:端口（云上服务器主要打开防火墙，开放端口）
 ## 4.将auth,user,iacaa 数据库配置改为你的数据库地址
-## 5.安装Redis
+## 5.安装Redis （具体安装方法寻问度娘）
 ## 6.将auth,gateway服务Redis配置改为你的Redis地址
 ## 7.按照gateway, auth, user, iacaa的顺序启动服务
 ## 8.将iacaa-admin 前端服务器配置改为你的地址
 ## 9.在iacaa-admin 文件夹下执行命令npm install后执行npm run dev 启动前端UI
+## 10.默认有不同角色账户 teacher 密码不记得了，自行修改代码生成吧
